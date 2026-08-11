@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>KİTSUNE DDOS</title>
+<style>
+:root{--bg:#08040d;--p:#12091b;--p2:#190d25;--p3:#211130;--line:#492066;--a:#a855f7;--a2:#d946ef;--txt:#f7efff;--muted:#a991b7;--ok:#39e58a;--bad:#ff5577}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -15%,#4b1268 0,#12081a 34%,#08040d 70%);color:var(--txt);font-family:Inter,Arial,sans-serif;min-height:100vh}
+button,input,textarea,select{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+.glass{background:linear-gradient(180deg,#160b21eF,#0e0715ee);border:1px solid var(--line);box-shadow:0 18px 60px #0009;border-radius:14px}
+.login{min-height:100vh;display:grid;place-items:center;padding:18px}.loginbox{width:min(440px,100%);padding:28px}.logo{font-size:32px;font-weight:1000;letter-spacing:4px;color:#e0a1ff;text-shadow:0 0 28px #a855f799}.sub{font-size:11px;color:var(--muted);margin:7px 0 22px}
+label{display:block;color:#cdb9d9;font-size:10px;font-weight:900;letter-spacing:1.2px;margin:12px 0 6px;text-transform:uppercase}
+input,textarea,select{width:100%;background:#09050d;color:var(--txt);border:1px solid #482060;border-radius:9px;padding:11px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:#b45cff;box-shadow:0 0 0 2px #a855f722}textarea{font-family:Consolas,monospace;line-height:1.45;resize:vertical}
+.btn{border:1px solid #6d3191;background:linear-gradient(180deg,#8c42bc,#5b2380);color:#fff;border-radius:9px;padding:10px 14px;font-weight:900}.btn:hover{filter:brightness(1.13)}.btn.red{background:#3a1020;border-color:#7f2948}.btn.green{background:#103d29;border-color:#2c8156}.btn.gray{background:#20152a;border-color:#4b3858}.btn.small{padding:7px 9px;font-size:11px}
+.msg{min-height:18px;margin-top:10px;font-size:12px;color:var(--bad)}
+.wrap{max-width:1250px;margin:auto;padding:16px}header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}.brand{font-size:23px;font-weight:1000;letter-spacing:2px;color:#d993ff}.status{font-size:10px;color:var(--muted);margin-top:3px}
+.nav{display:flex;gap:7px;overflow:auto;margin-bottom:13px;padding-bottom:2px}.nav button{white-space:nowrap;background:#140a1c;color:#cbb7d7;border:1px solid #3c2050;border-radius:8px;padding:9px 11px;font-size:11px;font-weight:900}.nav button.on{background:linear-gradient(180deg,#873bb2,#5c227d);color:#fff;border-color:#b85eea}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:11px}.card,.section{padding:14px}.metric{font-size:26px;font-weight:1000}.metric small{display:block;color:var(--muted);font-size:9px;letter-spacing:1px;margin-top:4px}.section{margin-top:11px}.section h3{margin:0 0 13px;font-size:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap}.row>*{flex:1;min-width:130px}.notice{padding:11px;background:#190d25;border-left:3px solid var(--a);color:#cbb9d6;font-size:12px;border-radius:5px}
+table{width:100%;border-collapse:collapse;font-size:11px}th,td{padding:9px;border-bottom:1px solid #2a1738;text-align:left;vertical-align:middle}th{font-size:9px;color:#a88db6;letter-spacing:.7px}td{color:#e7dced}.tablewrap{overflow:auto}.badge{display:inline-block;padding:4px 7px;border-radius:999px;font-size:9px;font-weight:900}.ok{background:#103c28;color:#55e99b}.no{background:#401323;color:#ff7690}
+.copykey{font-family:Consolas,monospace;color:#d99aff;word-break:break-all}.simstats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.stat{background:#0b0610;border:1px solid #321542;border-radius:9px;padding:10px}.stat b{display:block;font-size:18px}.stat span{font-size:9px;color:var(--muted)}
+.progress{height:9px;background:#281531;border-radius:20px;overflow:hidden}.progress i{display:block;width:0;height:100%;background:linear-gradient(90deg,#7c3aed,#ec4899);transition:width .18s}
+.log{height:255px;overflow:auto;background:#050308;border:1px solid #2d173a;border-radius:10px;padding:11px;color:#cba8da;font:11px Consolas,monospace;white-space:pre-wrap}
+.codegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.codecard{background:#0b0610;border:1px solid #341848;border-radius:10px;padding:10px}.codehead{display:flex;justify-content:space-between;align-items:center;gap:7px;margin-bottom:7px}.codehead b{font-size:11px}.codecard textarea{height:165px;min-height:165px;font-size:11px}
+.pager{display:flex;align-items:center;justify-content:center;gap:7px;margin-top:12px}.pageinfo{min-width:120px;text-align:center;font-size:11px;color:#c9b5d4}
+.keycreate{display:grid;grid-template-columns:2fr 1fr auto;gap:8px;align-items:end}.muted{color:var(--muted);font-size:10px}.danger{color:#ff7892}
+.usercode{background:#0b0610;border:1px solid #341848;border-radius:10px;padding:10px;margin:8px 0}
+.usercode-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.usercode pre{margin:8px 0 0;max-height:180px;overflow:auto;white-space:pre-wrap;word-break:break-word;background:#050308;border-radius:7px;padding:10px;color:#d9b8e8;font:11px Consolas,monospace}
+
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.codegrid{grid-template-columns:1fr}.simstats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.wrap{padding:9px}.grid{grid-template-columns:1fr 1fr}.keycreate{grid-template-columns:1fr}.loginbox{padding:20px}.brand{font-size:18px}.nav button{padding:8px 9px}}
+</style>
+</head>
+<body>
+
+<div id="login" class="login">
+ <div class="loginbox glass">
+  <div class="logo">KİTSUNE DDOS</div>
+  <div class="sub">Yetkili erişim sistemi</div>
+  <label>Erişim Key</label>
+  <input id="loginKey" autocomplete="off" placeholder="Key girin">
+  <button class="btn" style="width:100%;margin-top:12px" onclick="login()">PANELE GİR</button>
+  <div id="loginMsg" class="msg"></div>
+ </div>
+</div>
+
+<div id="app" class="hidden">
+<div class="wrap">
+<header>
+ <div><div class="brand">KİTSUNE DDOS</div><div class="status" id="sessionInfo">Oturum aktif</div></div>
+ <button class="btn gray small" onclick="logout()">ÇIKIŞ</button>
+</header>
+
+<div class="nav">
+ <button class="on" data-tab="home">ANA SAYFA</button>
+ <button data-tab="ddos">DDOS</button>
+ <button data-tab="termux">TERMUX</button>
+ <button data-tab="keys" id="keysNav" class="hidden" style="display:none!important">KEYLER</button>
+ <button data-tab="codes" id="codesNav" class="hidden">KODLAR</button>
+ <button data-tab="admin" id="adminNav" class="hidden">ADMIN</button>
+</div>
+
+<section id="tab-home">
+ <div class="grid">
+  <div class="card glass"><div class="metric" id="mKeys">0</div><small>AKTİF KEY</small></div>
+  <div class="card glass"><div class="metric" id="mCodes">0</div><small>KAYITLI KOD</small></div>
+  <div class="card glass"><div class="metric">200</div><small>KOD SAYFASI</small></div>
+  <div class="card glass"><div class="metric" id="mSessions">0</div><small>OTURUM</small></div>
+ </div>
+ <div class="section glass"><h3>Sistem</h3><div class="notice" id="announcement">Hoş geldiniz.</div></div>
+</section>
+
+<section id="tab-ddos" class="hidden">
+ <div id="ddosGate" class="section glass">
+  <h3>DDOS ERİŞİMİ</h3>
+  <div class="notice">Bu bölüm için Admin tarafından oluşturulmuş süreli DDOS key gereklidir.</div>
+  <label>DDOS KEY</label>
+  <input id="ddosKeyInput" placeholder="DDOS key">
+  <button class="btn" style="margin-top:8px" onclick="unlockDdos()">DDOS'A GİR</button>
+  <div id="ddosGateMsg" class="msg"></div>
+ </div>
+ <div id="ddosContent" class="hidden">
+<div class="section glass">
+  <h3>DDOS</h3>
+  <div class="row">
+   <input id="target" placeholder="https://site-adresi.com">
+   <select id="method"><option>HTTP</option><option>UDP</option><option>TCP</option><option>GAME</option></select>
+   <input id="duration" type="number" min="1" value="30" placeholder="Süre">
+  </div>
+  <div class="row" style="margin-top:8px">
+   <button class="btn" onclick="startAttack()">BAŞLAT</button>
+   <button class="btn red" onclick="stopAttack()">DURDUR</button>
+  </div>
+  <div class="simstats">
+   <div class="stat"><b id="sReq">0</b><span>REQUEST/S</span></div>
+   <div class="stat"><b id="sPackets">0</b><span>PACKETS</span></div>
+   <div class="stat"><b id="sTime">00:00</b><span>SÜRE</span></div>
+   <div class="stat"><b id="sStatus">IDLE</b><span>DURUM</span></div>
+  </div>
+  <div style="margin-top:12px" class="progress"><i id="attackProgress"></i></div>
+  <pre id="attackLog" class="log">[SYSTEM] Hazır.</pre>
+ </div>
+</section>
+ </div>
+</section>
+
+<section id="tab-termux" class="hidden">
+ <div class="section glass"><h3>TERMUX</h3>
+  <div class="notice">Yayınlanan kodlar. Kodları yalnızca görüntüleyebilir ve kopyalayabilirsiniz.</div>
+  <div id="userCodeList" style="margin-top:10px"></div>
+ </div>
+</section>
+
+<section id="tab-keys" class="hidden"></section>
+
+<section id="tab-codes" class="hidden">
+ <div class="section glass">
+  <h3>TERMUX KOD ARŞİVİ</h3>
+  <div class="row">
+   <input id="codeName" placeholder="Kod adı">
+   <button class="btn" onclick="saveCurrentCodes()">SAYFAYI KAYDET</button>
+   <button class="btn gray" onclick="clearCurrentCodes()">SAYFAYI TEMİZLE</button>
+  </div>
+  <div class="muted" style="margin-top:8px">ADMIN: 200 sayfa × 20 kod alanı. Yaz, düzenle ve SAYFAYI KAYDET. Kullanıcı tarafında yalnızca görüntüle + kopyala vardır.</div>
+ </div>
+ <div class="section glass"><div class="codegrid" id="codeGrid"></div><div class="pager"><button class="btn gray small" onclick="changePage(-1)">‹</button><div class="pageinfo" id="pageInfo">1 / 200</div><button class="btn gray small" onclick="changePage(1)">›</button></div></div>
+</section>
+
+<section id="tab-admin" class="hidden">
+ <div class="section glass">
+  <h3>ADMIN KİLİDİ</h3>
+  <div class="row">
+   <input id="adminUnlockPassword" type="password" placeholder="Admin şifresi">
+   <button class="btn" onclick="unlockAdmin()">ADMIN KİLİDİNİ AÇ</button>
+   <button class="btn red" onclick="lockAdmin()">KİLİTLE</button>
+  </div>
+  <div id="adminLockMsg" class="msg"></div>
+ </div>
+ <div id="adminContent" class="hidden">
+  <div class="section glass">
+  <h3>ADMIN PANELİ</h3>
+
+  <div class="section glass" style="padding:12px;margin-top:0">
+   <h3 style="margin-bottom:10px">KEY YÖNETİMİ</h3>
+   <div class="grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:10px">
+    <div class="card glass"><div class="metric" id="adminTotalKeys">0</div><small>TOPLAM KEY</small></div>
+    <div class="card glass"><div class="metric" id="adminActiveKeys">0</div><small>AKTİF KEY</small></div>
+    <div class="card glass"><div class="metric" id="adminClosedKeys">0</div><small>KAPALI KEY</small></div>
+    <div class="card glass"><div class="metric" id="adminExpiringKeys">0</div><small>SÜRESİ DOLAN</small></div>
+   </div>
+
+   <div class="row">
+    <div>
+     <label>KEY ADI</label>
+     <input id="keyName" placeholder="Örn: Ana Sunucu, VPN Key, Test Key">
+    </div>
+    <div>
+     <label>SÜRE</label>
+     <select id="keyDays">
+      <option value="1">1 GÜN</option>
+      <option value="7">7 GÜN</option>
+      <option value="30">30 GÜN</option>
+      <option value="90">90 GÜN</option>
+     </select>
+    </div>
+    <button class="btn" onclick="createKey()">KEY OLUŞTUR</button>
+   </div>
+
+   <div class="row" style="margin-top:8px">
+    <div>
+     <label>OLUŞTURULAN KEY</label>
+     <input id="newKey" readonly placeholder="Oluşturduktan sonra burada görünür">
+    </div>
+    <button class="btn gray" onclick="copyGeneratedKey()">KOPYALA</button>
+   </div>
+
+   <div class="tablewrap" style="margin-top:12px">
+    <table>
+     <thead>
+      <tr><th>KEY ADI</th><th>KEY</th><th>SÜRE</th><th>KALAN SÜRE</th><th>DURUM</th><th>İŞLEMLER</th></tr>
+     </thead>
+     <tbody id="keyRows"></tbody>
+    </table>
+   </div>
+  </div>
+ <div class="section glass" style="padding:12px;margin-top:0">
+  <h4 style="margin:0 0 10px">DDOS KEY OLUŞTUR</h4>
+  <div class="row">
+   <input id="ddosNewKey" placeholder="Boş bırakılırsa rastgele oluşturulur">
+   <select id="ddosKeyDays"><option value="1">1 GÜN</option><option value="7">7 GÜN</option><option value="30">30 GÜN</option><option value="90">90 GÜN</option></select>
+   <button class="btn" onclick="createDdosKey()">KEY OLUŞTUR</button>
+  </div>
+  <div class="tablewrap" style="margin-top:10px"><table><thead><tr><th>DDOS KEY</th><th>SÜRE</th><th>CİHAZ</th><th>İŞLEM</th></tr></thead><tbody id="ddosKeyRows"></tbody></table></div>
+ </div>
+  <div class="row">
+   <div><label>Duyuru</label><input id="adminAnnouncement"></div>
+   <button class="btn" onclick="saveAnnouncement()">GÜNCELLE</button>
+  </div>
+ </div>
+ <div class="section glass">
+  <h3>TERMUX KOD SAYFASI</h3>
+  <div class="row">
+   <input id="adminPage" type="number" min="1" max="200" value="1" placeholder="Sayfa">
+   <button class="btn" onclick="goAdminPage()">SAYFAYA GİT</button>
+   <button class="btn gray" onclick="openCodesTab();renderCodes()">KODLARI AÇ</button>
+  </div>
+ </div>
+ <div class="section glass"><h3>İSTATİSTİK</h3><div id="adminStats" class="notice"></div></div>
+ </div>
+</section>
+</div></div>
+
+<script>
+const ADMIN_PASSWORD="TREKSY-99";
+const DEFAULT_KEY="setfpscap(999)";
+// Supabase ayarlari: degerleri doldurmazsan mevcut localStorage sistemi aynen calisir.
+const SUPABASE_URL="https://lnnxbxeoghtzecvnbopm.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_grZn_AibgYsEZBFsupFZqw_jVr3MwhW";
+const SUPABASE_ENABLED=Boolean(SUPABASE_URL&&SUPABASE_ANON_KEY);
+
+async function validateKeyWithSupabase(k){
+ if(!SUPABASE_ENABLED)return null;
+ try{
+  const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/rpc/validate_key",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_ANON_KEY,"Authorization":"Bearer "+SUPABASE_ANON_KEY},body:JSON.stringify({input_key:k})});
+  if(!r.ok)throw new Error("Supabase "+r.status);
+  const data=await r.json();
+  if(!Array.isArray(data)||!data.length)return {valid:false};
+  return data[0];
+ }catch(e){console.error("Supabase key validation failed:",e);return {error:true};}
+}
+const DEVICE_TOKEN_KEY="kitsune_device_token";
+let ddosUnlocked=false;
+function deviceToken(){
+ let t=localStorage.getItem(DEVICE_TOKEN_KEY);
+ if(!t){t="DEV-"+cryptoRandom();localStorage.setItem(DEVICE_TOKEN_KEY,t)}
+ return t;
+}
+function cryptoRandom(){
+ const a=new Uint32Array(3);
+ if(window.crypto?.getRandomValues) crypto.getRandomValues(a);
+ else {a[0]=Date.now();a[1]=Math.random()*1e9;a[2]=Math.random()*1e9}
+ return Array.from(a).map(x=>x.toString(36).toUpperCase()).join("");
+}
+function makeUniqueDdosKey(){
+ let k;
+ do{k="DDOS-"+cryptoRandom()+"-"+Math.random().toString(36).slice(2,8).toUpperCase()}while(db.ddosKeys[k]);
+ return k;
+}
+const PAGE_COUNT=200, CODES_PER_PAGE=20;
+const DBKEY="kitsune_ddos_db_v4";
+let db, currentPage=1, currentKey=null, adminUnlocked=false, attackTimer=null, attackStarted=0, attackDuration=0, attackRunning=false;
+
+function loadDB(){
+ try{db=JSON.parse(localStorage.getItem(DBKEY)||"null")}catch(e){db=null}
+ if(!db) db={keys:{},ddosKeys:{},codes:{},announcement:"Hoş geldiniz.",sessions:0};
+ if(!db.ddosKeys) db.ddosKeys={};
+  syncPairedKeys();
+ delete db.keys[DEFAULT_KEY];
+ saveDB();
+}
+function syncPairedKeys(){
+  if(!db.keys)db.keys={};
+  if(!db.ddosKeys)db.ddosKeys={};
+  Object.entries(db.keys).forEach(([k,x])=>{
+    if(!db.ddosKeys[k])db.ddosKeys[k]={created:x.created,expires:x.expires,disabled:x.disabled,device:null};
+  });
+  Object.entries(db.ddosKeys).forEach(([k,x])=>{
+    if(!db.keys[k])db.keys[k]={created:x.created,expires:x.expires,disabled:x.disabled,device:null};
+  });
+}
+
+function saveDB(){localStorage.setItem(DBKEY,JSON.stringify(db))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function validKey(k){let x=db.keys[k];return x&&!x.disabled&&Date.now()<x.expires}
+function fmt(ms){if(ms<=0)return "SÜRESİ DOLMUŞ";let s=Math.floor(ms/1000),d=Math.floor(s/86400);s%=86400;let h=Math.floor(s/3600);s%=3600;let m=Math.floor(s/60);s%=60;return `${d}g ${String(h).padStart(2,"0")}s ${String(m).padStart(2,"0")}d`}
+async function login(){
+ const k=document.getElementById("loginKey").value.trim();
+ const msg=document.getElementById("loginMsg");
+ msg.textContent="";
+ if(!k){msg.textContent="Key girin.";return}
+ if(k===ADMIN_PASSWORD){currentKey="ADMIN";adminUnlocked=true;enter();return}
+ if(SUPABASE_ENABLED){
+  msg.textContent="Key kontrol ediliyor...";
+  const result=await validateKeyWithSupabase(k);
+  if(result?.error){msg.textContent="Key doğrulama sunucusuna ulaşılamadı.";return}
+  if(!result?.valid){msg.textContent="Key geçersiz, kapatılmış veya süresi dolmuş.";return}
+  currentKey=k;db.sessions++;saveDB();enter();return;
+ }
+ if(!validKey(k)){msg.textContent="Key geçersiz, kapatılmış veya süresi dolmuş.";return}
+ const keyObj=db.keys[k];
+ const dev=deviceToken();
+ if(keyObj.device&&keyObj.device!==dev){msg.textContent="Bu key başka bir cihazda kullanılıyor.";return}
+ keyObj.device=dev;
+ currentKey=k;db.sessions++;saveDB();enter();
+}
+function enter(){
+ document.getElementById("login").classList.add("hidden");document.getElementById("app").classList.remove("hidden");
+ const isAdmin=currentKey==="ADMIN";
+ adminUnlocked=(currentKey==="ADMIN");ddosUnlocked=false;
+ document.getElementById("ddosGate")?.classList.remove("hidden");
+ document.getElementById("ddosContent")?.classList.add("hidden");
+ document.getElementById("adminNav").classList.toggle("hidden",!isAdmin);
+ document.getElementById("keysNav").classList.toggle("hidden",!isAdmin);
+ document.getElementById("codesNav").classList.toggle("hidden",!isAdmin);
+ document.getElementById("adminContent").classList.toggle("hidden",!adminUnlocked);
+ document.getElementById("sessionInfo").textContent=isAdmin?"ADMIN OTURUMU":"KEY: "+currentKey;
+ document.getElementById("announcement").textContent=db.announcement||"Hoş geldiniz.";
+ document.getElementById("mSessions").textContent=db.sessions||0;renderAll();
+}
+function logout(){stopAttack();adminUnlocked=false;currentKey=null;document.getElementById("app").classList.add("hidden");document.getElementById("login").classList.remove("hidden");document.getElementById("loginKey").value=""}
+function adminOnly(){
+ if(currentKey!=="ADMIN"){alert("Admin yetkisi gerekli.");return false}
+ adminUnlocked=true;
+ const c=document.getElementById("adminContent");
+ if(c)c.classList.remove("hidden");
+ return true;
+}
+function unlockAdmin(){
+ if(currentKey!=="ADMIN"){document.getElementById("adminLockMsg").textContent="Bu alan yalnızca admin hesabına açıktır.";return}
+ if(document.getElementById("adminUnlockPassword").value===ADMIN_PASSWORD){
+   adminUnlocked=true;
+   document.getElementById("adminContent").classList.remove("hidden");
+   document.getElementById("adminLockMsg").textContent="Admin kilidi açık.";
+   document.getElementById("adminLockMsg").style.color="var(--ok)";
+ }else{
+   document.getElementById("adminLockMsg").textContent="Şifre hatalı.";
+ }
+}
+function lockAdmin(){
+ adminUnlocked=false;
+ document.getElementById("adminContent").classList.add("hidden");
+ document.getElementById("adminUnlockPassword").value="";
+ document.getElementById("adminLockMsg").textContent="Admin kilitli.";
+ document.getElementById("adminLockMsg").style.color="var(--bad)";
+}
+
+
+document.querySelectorAll(".nav button").forEach(b=>b.onclick=()=>{
+ document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+ document.querySelectorAll("[id^=tab-]").forEach(x=>x.classList.add("hidden"));
+ document.getElementById("tab-"+b.dataset.tab).classList.remove("hidden");
+ if(b.dataset.tab==="keys"||b.dataset.tab==="codes"||b.dataset.tab==="admin")renderAll();
+});
+
+function createDdosKey(){
+  if(!adminOnly())return;
+  let k=document.getElementById("ddosNewKey").value.trim()||makeUniqueDdosKey();
+  if(db.ddosKeys[k]||db.keys[k]){alert("Bu key zaten mevcut.");return}
+  let days=+document.getElementById("ddosKeyDays").value;
+  const now=Date.now(),expires=now+days*86400000;
+  db.ddosKeys[k]={created:now,expires:expires,disabled:false,device:null};
+  db.keys[k]={created:now,expires:expires,disabled:false,device:null};
+  document.getElementById("ddosNewKey").value="";
+  saveDB();renderAll();
+  alert("KEY OLUŞTURULDU:\n"+k+"\n\nAynı key site girişinde ve DDOS erişiminde kullanılabilir.");
+}
+function unlockDdos(){
+ let k=document.getElementById("ddosKeyInput").value.trim(),x=db.ddosKeys[k];
+ let msg=document.getElementById("ddosGateMsg");
+ if(!x||x.disabled||Date.now()>=x.expires){msg.textContent="DDOS key geçersiz veya süresi dolmuş.";return}
+ const d=deviceToken();
+ if(x.device && x.device!==d){msg.textContent="Bu DDOS key başka bir cihazda kullanılıyor.";return}
+ x.device=d;saveDB();ddosUnlocked=true;
+ document.getElementById("ddosGate").classList.add("hidden");
+ document.getElementById("ddosContent").classList.remove("hidden");
+ msg.textContent="";
+}
+function renderDdosKeys(){
+ const el=document.getElementById("ddosKeyRows"); if(!el)return;
+ el.innerHTML=Object.entries(db.ddosKeys).map(([k,x])=>{
+  const active=!x.disabled&&Date.now()<x.expires;
+  const dev=x.device?"BAĞLI":"BOŞ";
+  return `<tr><td class="copykey">${esc(k)}</td><td>${fmt(x.expires-Date.now())}</td><td>${dev}</td><td>
+   <button class="btn gray small" onclick="extendDdosKey(${JSON.stringify(k)})">+GÜN</button>
+   <button class="btn ${x.disabled?"green":"red"} small" onclick="toggleDdosKey(${JSON.stringify(k)})">${x.disabled?"AÇ":"KAPAT"}</button>
+   <button class="btn red small" onclick="deleteDdosKey(${JSON.stringify(k)})">SİL</button>
+  </td></tr>`;
+ }).join("")||'<tr><td colspan="4">DDOS key yok.</td></tr>';
+}
+function extendDdosKey(k){
+  if(!adminOnly())return;
+  let d=+prompt("Kaç gün eklensin?","7");
+  if(!d||d<1)return;
+  let x=db.ddosKeys[k];
+  if(!x)return;
+  const expires=Math.max(Date.now(),x.expires)+d*86400000;
+  x.expires=expires;x.disabled=false;
+  if(db.keys[k]){db.keys[k].expires=expires;db.keys[k].disabled=false}
+  saveDB();renderAll();
+}
+function toggleDdosKey(k){
+  if(!adminOnly())return;
+  if(!db.ddosKeys[k])return;
+  db.ddosKeys[k].disabled=!db.ddosKeys[k].disabled;
+  if(db.keys[k])db.keys[k].disabled=db.ddosKeys[k].disabled;
+  saveDB();renderAll();
+}
+function deleteDdosKey(k){
+  if(!adminOnly())return;
+  if(confirm("Key silinsin mi?")){
+    delete db.ddosKeys[k];
+    delete db.keys[k];
+    saveDB();renderAll();
+  }
+}
+async function createKey(){
+  if(!adminOnly())return;
+  let days=+document.getElementById("keyDays").value;
+  let keyName=(document.getElementById("keyName")?.value||"").trim()||"Adsız Key";
+  let k;
+  do{k="KITSUNE-"+cryptoRandom()+"-"+Math.random().toString(36).slice(2,8).toUpperCase()}while(db.keys[k]||db.ddosKeys[k]);
+  const now=Date.now(),expires=now+days*86400000;
+  db.keys[k]={created:now,expires:expires,disabled:false,device:null,name:keyName};
+  db.ddosKeys[k]={created:now,expires:expires,disabled:false,device:null,name:keyName};
+
+  if(SUPABASE_ENABLED){
+    try{
+      const r=await fetch(SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/keys",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "apikey":SUPABASE_ANON_KEY,
+          "Authorization":"Bearer "+SUPABASE_ANON_KEY,
+          "Prefer":"return=minimal"
+        },
+        body:JSON.stringify({
+          key:k,
+          expires_at:new Date(expires).toISOString(),
+          disabled:false
+        })
+      });
+      if(!r.ok){
+        const err=await r.text();
+        console.error("Supabase key create failed:",err);
+        delete db.keys[k]; delete db.ddosKeys[k];
+        alert("Key Supabase'e kaydedilemedi.\n\n"+err);
+        return;
+      }
+    }catch(e){
+      console.error("Supabase key create failed:",e);
+      delete db.keys[k]; delete db.ddosKeys[k];
+      alert("Supabase'e bağlanılamadı.\n\n"+e.message);
+      return;
+    }
+  }
+
+  saveDB();renderAll();
+  document.getElementById("newKey").value=k;
+  if(document.getElementById("keyName"))document.getElementById("keyName").value="";
+  try{navigator.clipboard.writeText(k)}catch(e){}
+  alert("KEY OLUŞTURULDU:\n\n"+k+"\n\nAynı key site girişinde ve DDOS erişiminde kullanılabilir.");
+}
+function copyGeneratedKey(){
+ const k=document.getElementById("newKey").value.trim();
+ if(!k){alert("Önce bir key oluştur.");return}
+ navigator.clipboard?.writeText(k).then(()=>alert("Key kopyalandı.")).catch(()=>{
+   const t=document.createElement("textarea");t.value=k;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();alert("Key kopyalandı.");
+ });
+}
+async function supabaseKeyPatch(k, payload){
+  if(!SUPABASE_ENABLED)return true;
+  const url=SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/keys?key=eq."+encodeURIComponent(k);
+  const r=await fetch(url,{
+    method:"PATCH",
+    headers:{
+      "Content-Type":"application/json",
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":"Bearer "+SUPABASE_ANON_KEY,
+      "Prefer":"return=minimal"
+    },
+    body:JSON.stringify(payload)
+  });
+  if(!r.ok)throw new Error(await r.text());
+  return true;
+}
+async function supabaseKeyDelete(k){
+  if(!SUPABASE_ENABLED)return true;
+  const url=SUPABASE_URL.replace(/\/$/,"")+"/rest/v1/keys?key=eq."+encodeURIComponent(k);
+  const r=await fetch(url,{
+    method:"DELETE",
+    headers:{
+      "apikey":SUPABASE_ANON_KEY,
+      "Authorization":"Bearer "+SUPABASE_ANON_KEY,
+      "Prefer":"return=minimal"
+    }
+  });
+  if(!r.ok)throw new Error(await r.text());
+  return true;
+}
+async function toggleKey(k){
+  if(!adminOnly())return;
+  if(!db.keys[k])return;
+  const next=!db.keys[k].disabled;
+  try{
+    await supabaseKeyPatch(k,{disabled:next});
+    db.keys[k].disabled=next;
+    if(db.ddosKeys[k])db.ddosKeys[k].disabled=next;
+    saveDB();renderAll();
+  }catch(e){
+    console.error(e);
+    alert("Key durumu Supabase'de güncellenemedi.\n\n"+e.message);
+  }
+}
+async function addDays(k){
+  if(!adminOnly())return;
+  let d=+prompt("Kaç gün eklensin?","7");
+  if(!d||d<1)return;
+  let x=db.keys[k];
+  if(!x)return;
+  const expires=Math.max(Date.now(),x.expires)+d*86400000;
+  try{
+    await supabaseKeyPatch(k,{expires_at:new Date(expires).toISOString(),disabled:false});
+    x.expires=expires;x.disabled=false;
+    if(db.ddosKeys[k]){db.ddosKeys[k].expires=expires;db.ddosKeys[k].disabled=false}
+    saveDB();renderAll();
+  }catch(e){
+    console.error(e);
+    alert("Key süresi Supabase'de güncellenemedi.\n\n"+e.message);
+  }
+}
+async function deleteKey(k){
+  if(!adminOnly())return;
+  if(confirm("Key silinsin mi?")){
+    try{
+      await supabaseKeyDelete(k);
+      delete db.keys[k];
+      delete db.ddosKeys[k];
+      saveDB();renderAll();
+    }catch(e){
+      console.error(e);
+      alert("Key Supabase'den silinemedi.\n\n"+e.message);
+    }
+  }
+}
+function renderKeys(){
+ let entries=Object.entries(db.keys);
+ let total=entries.length;
+ let active=entries.filter(([k,x])=>!x.disabled&&Date.now()<x.expires).length;
+ let closed=entries.filter(([k,x])=>x.disabled).length;
+ let expired=entries.filter(([k,x])=>!x.disabled&&Date.now()>=x.expires).length;
+
+ const setText=(id,v)=>{let el=document.getElementById(id);if(el)el.textContent=v};
+ setText("adminTotalKeys",total);
+ setText("adminActiveKeys",active);
+ setText("adminClosedKeys",closed);
+ setText("adminExpiringKeys",expired);
+ setText("mKeys",active);
+
+ let rows=entries.map(([k,x])=>{
+   let remaining=x.expires-Date.now();
+   let isExpired=remaining<=0;
+   let isActive=!x.disabled&&!isExpired;
+   let status=x.disabled?"KAPALI":(isExpired?"SÜRESİ DOLDU":"AKTİF");
+   let cls=isActive?"ok":"no";
+   let name=esc(x.name||"Adsız Key");
+   let key=esc(k);
+   return `<tr>
+     <td><b>${name}</b></td>
+     <td class="copykey">${key}</td>
+     <td>${fmt(Math.max(0,remaining))}</td>
+     <td><span>${isExpired?"0":fmt(remaining)}</span></td>
+     <td><span class="badge ${cls}">${status}</span></td>
+     <td>
+       <button class="btn gray small" onclick="addDays(${JSON.stringify(k)})">+GÜN</button>
+       <button class="btn ${x.disabled?"green":"red"} small" onclick="toggleKey(${JSON.stringify(k)})">${x.disabled?"AÇ":"KAPAT"}</button>
+       <button class="btn red small" onclick="deleteKey(${JSON.stringify(k)})">SİL</button>
+     </td>
+   </tr>`;
+ }).join("");
+
+ let body=document.getElementById("keyRows");
+ if(body)body.innerHTML=rows||'<tr><td colspan="6">Henüz key oluşturulmamış.</td></tr>';
+}
+function saveAnnouncement(){if(!adminOnly())return;db.announcement=document.getElementById("adminAnnouncement").value;saveDB();document.getElementById("announcement").textContent=db.announcement;alert("Güncellendi.")}
+function goAdminPage(){if(!adminOnly())return;let p=Math.max(1,Math.min(200,+document.getElementById("adminPage").value||1));currentPage=p;openCodesTab();renderCodes()}
+
+function codeObj(){if(!db.codes[currentPage])db.codes[currentPage]=Array.from({length:CODES_PER_PAGE},()=>({name:"",code:""}));return db.codes[currentPage]}
+function renderCodes(){
+ let arr=codeObj();
+ document.getElementById("pageInfo").textContent=`${currentPage} / ${PAGE_COUNT}`;
+ document.getElementById("codeGrid").innerHTML=arr.map((x,i)=>`<div class="codecard">
+ <div class="codehead"><b>KOD ${i+1}</b><input style="width:50%;padding:6px" value="${esc(x.name)}" data-name="${i}" placeholder="Kod adı"></div>
+ <textarea data-code="${i}" spellcheck="false" placeholder="Kodunuzu buraya yazın...">${esc(x.code)}</textarea>
+ </div>`).join("");
+}
+function collectCodes(){
+ let arr=codeObj();
+ document.querySelectorAll("[data-code]").forEach(t=>{arr[+t.dataset.code].code=t.value});
+ document.querySelectorAll("[data-name]").forEach(t=>{arr[+t.dataset.name].name=t.value});
+}
+function saveCurrentCodes(){if(!adminOnly())return;collectCodes();saveDB();renderStats();alert("Sayfa kaydedildi.")}
+function clearCurrentCodes(){if(!adminOnly())return;if(confirm("Bu sayfadaki 20 kod alanı temizlensin mi?")){db.codes[currentPage]=Array.from({length:CODES_PER_PAGE},()=>({name:"",code:""}));saveDB();renderCodes()}}
+function changePage(n){collectCodes();saveDB();currentPage=Math.max(1,Math.min(PAGE_COUNT,currentPage+n));renderCodes()}
+function openCodesTab(){document.querySelector('[data-tab="codes"]').click()}
+function renderUserCodes(){
+ const box=document.getElementById("userCodeList");
+ if(!box)return;
+ let items=[];
+ for(let p=1;p<=PAGE_COUNT;p++){
+   const arr=db.codes[p]||[];
+   arr.forEach((x,i)=>{if(x&&x.code&&x.code.trim())items.push({page:p,index:i,name:x.name||("Kod "+(i+1)),code:x.code})});
+ }
+ if(!items.length){box.innerHTML='<div class="notice">Henüz yayınlanmış kod bulunmuyor.</div>';return}
+ box.innerHTML=items.map((x,i)=>`<div class="usercode">
+  <div class="usercode-head"><b>${esc(x.name)}</b><button class="btn small" onclick="copyUserCode(${i})">KOPYALA</button></div>
+  <pre id="uc-${i}">${esc(x.code)}</pre>
+ </div>`).join("");
+ window.__userCodes=items;
+}
+async function copyUserCode(i){
+ const x=window.__userCodes?.[i]; if(!x)return;
+ try{await navigator.clipboard.writeText(x.code);alert("Kod kopyalandı.");}
+ catch(e){const ta=document.createElement("textarea");ta.value=x.code;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove();alert("Kod kopyalandı.");}
+}
+function renderStats(){
+ let count=Object.values(db.codes).reduce((a,p)=>a+p.filter(x=>x.code.trim()).length,0);
+ document.getElementById("mCodes").textContent=count;
+ document.getElementById("adminStats").textContent=`Key sayısı: ${Object.keys(db.keys).length} | Kayıtlı kod: ${count} | Sayfa: ${PAGE_COUNT} | Slot/sayfa: ${CODES_PER_PAGE}`;
+}
+function renderAll(){renderKeys();renderCodes();renderUserCodes();renderStats();document.getElementById("adminAnnouncement").value=db.announcement||""}
+
+function addLog(id,text){let el=document.getElementById(id);el.textContent+=`\n${text}`;el.scrollTop=el.scrollHeight}
+function startAttack(){
+ if(attackRunning)return;
+ let target=document.getElementById("target").value.trim();
+ if(!target){alert("Site linkini girin.");return}
+ try{new URL(target)}catch(e){alert("Geçerli bir site linki girin.");return}
+ attackRunning=true;attackStarted=Date.now();attackDuration=Math.max(1,+document.getElementById("duration").value||30)*1000;
+ document.getElementById("sStatus").textContent="RUNNING";document.getElementById("attackLog").textContent="";
+ addLog("attackLog","[KİTSUNE] Hedef: "+target);addLog("attackLog","[KİTSUNE] Method: "+document.getElementById("method").value);addLog("attackLog","[KİTSUNE] İşlem başlatıldı.");
+ attackTimer=setInterval(tickAttack,200);
+}
+function tickAttack(){
+ if(!attackRunning)return;
+ let elapsed=Date.now()-attackStarted,ratio=Math.min(1,elapsed/attackDuration);
+ document.getElementById("attackProgress").style.width=(ratio*100).toFixed(1)+"%";
+ document.getElementById("sTime").textContent=new Date(elapsed).toISOString().substr(14,5);
+ let r=Math.floor(12000+Math.random()*88000),p=Math.floor(ratio*18000000+Math.random()*300000);
+ document.getElementById("sReq").textContent=r.toLocaleString("tr-TR");document.getElementById("sPackets").textContent=p.toLocaleString("tr-TR");
+ if(Math.random()<.35)addLog("attackLog",`[${new Date().toLocaleTimeString()}] worker-${1+Math.floor(Math.random()*8)} | ${r.toLocaleString()} req/s | status 200`);
+ if(ratio>=1){addLog("attackLog","[KİTSUNE] İşlem tamamlandı.");stopAttack()}
+}
+function stopAttack(){
+ if(attackTimer){clearInterval(attackTimer);attackTimer=null}
+ if(attackRunning)addLog("attackLog","[KİTSUNE] İşlem durduruldu.");
+ attackRunning=false;document.getElementById("sStatus").textContent="STOPPED";
+}
+function runTermux(){
+ let cmd=document.getElementById("termuxCommand").value.trim();
+ if(!cmd){alert("Komut veya kod adı girin.");return}
+ addLog("termuxLog","$ "+cmd);addLog("termuxLog","[KİTSUNE] İşlem kuyruğa alındı.");addLog("termuxLog","[KİTSUNE] Çıktı: process completed.");
+}
+
+loadDB();renderAll();
+setInterval(()=>{if(document.getElementById("app").classList.contains("hidden"))return;renderKeys()},1000);
+</script>
+</body>
+</html>
+<script>setInterval(()=>{if(typeof currentKey!=='undefined'&&currentKey==='ADMIN'&&typeof adminUnlocked!=='undefined'&&adminUnlocked&&typeof renderKeys==='function')renderKeys()},60000);</script>
